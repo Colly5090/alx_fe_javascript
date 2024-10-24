@@ -99,12 +99,13 @@ function createAddQuoteForm(){
     document.body.appendChild(formContainer);
 }
 
-function addQuote(){
+async function addQuote(){
     const newQuoteText = document.getElementById('newQuoteText').value.trim();
     const newQuoteCategory = document.getElementById('newQuoteCategory').value.trim();
 
     if (newQuoteText && newQuoteCategory) {
-        quotes.push({ text: newQuoteText, category: newQuoteCategory });
+        const newQuote = { text: newQuoteText, category: newQuoteCategory };
+        quotes.push(newQuote);
         saveQuotesToLocalStorage();
 
         // If a new category is introduced, update the dropdown
@@ -112,6 +113,9 @@ function addQuote(){
             categories.push(newQuoteCategory);
             populateCategories();
         }
+
+        // POST the new quote to the mock API
+        await postQuoteToServer(newQuote);
 
         // Clear input fields after submission
         document.getElementById('newQuoteText').value = '';
@@ -237,6 +241,27 @@ async function fetchQuotesFromServer() {
     } catch (error) {
         console.error('Error fetching quotes from server:', error);
         return [];
+    }
+}
+
+// Function to post the quote to the server
+async function postQuoteToServer(quote){
+    try {
+        const response = await fetch(SERVER_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(quote),
+        });
+        if (!response.ok){
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log('Quote posted successfully:', data);
+    } catch (error) {
+        console.error('Error posting quote to server:', error);
+        alert('Failed to add quote to the server. Please try again later.'); 
     }
 }
 
