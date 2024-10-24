@@ -336,8 +336,14 @@ function notifyUser(message){
 }
 
 async function syncQuotes(){
-    const serverQuotes = await fetchQuotesFromServer();
-    syncWithLocalStorage(serverQuotes);
+    try {
+        const serverQuotes = await fetchQuotesFromServer();
+        syncWithLocalStorage(serverQuotes);
+        alert("Quotes synced with server!");
+    } catch(error){
+        console.error("Error syncing quotes:", error);
+        alert("Failed to sync quotes with server.");
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
