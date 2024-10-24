@@ -217,13 +217,18 @@ function saveQuotesToLocalStorage(){
 }
 
 //SetUp server simulation with mock API like JSONplaceholder
-
 const SERVER_URL = 'https://jsonplaceholder.typicode.com/posts';
 
 // Simulate server interaction to fetch quotes
 async function fetchQuotesFromServer() {
     try {
-        const response = await fetch(SERVER_URL);
+        const response = await fetch(SERVER_URL, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
         const serverQuotes = await response.json();
         return serverQuotes.map(quote => ({
             text: quote.title,
