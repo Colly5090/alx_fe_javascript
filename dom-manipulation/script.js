@@ -169,7 +169,7 @@ function loadQuotesFromLocalStorage(){
 
 function createExportButton(){
     const exportButton = document.createElement('button');
-    exportButton.textContent = 'Export';
+    exportButton.textContent = 'Export Quotes';
     exportButton.style.marginTop = '20px';
     exportButton.addEventListener('click', exportQuotesToJSON);
     document.body.appendChild(exportButton);
