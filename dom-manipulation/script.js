@@ -117,6 +117,9 @@ async function addQuote(){
         // POST the new quote to the mock API
         await postQuoteToServer(newQuote);
 
+        // Call syncQuotes to ensure local storage is updated
+        await syncQuotes();
+
         // Clear input fields after submission
         document.getElementById('newQuoteText').value = '';
         document.getElementById('newQuoteCategory').value = '';
@@ -267,10 +270,7 @@ async function postQuoteToServer(quote){
 
 // Periodically fetch data from the server every 5 minutes
 function periodicFetch(){
-    setInterval(async () => {
-        const serverQuotes = await fetchQuotesFromServer();
-        syncWithLocalStorage(serverQuotes);
-    }, 300000); //sync every 5minutes from the server
+    setInterval(syncQuotes, 300000); //sync every 5 minutes from the server
 }
 
 function syncWithLocalStorage(serverQuotes) {
@@ -335,12 +335,17 @@ function notifyUser(message){
     }, 5000);
 }
 
+async function syncQuotes(){
+    const serverQuotes = await fetchQuotesFromServer();
+    syncWithLocalStorage(serverQuotes);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     populateCategories();
     createAddQuoteForm();
     loadQuotesFromLocalStorage();
     loadLastViewedQuote();
-    //addImportFileInput();
+    syncQuotes();
     periodicFetch()
     
 
