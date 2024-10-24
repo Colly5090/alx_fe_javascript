@@ -14,6 +14,15 @@
       <option value="all">All Categories</option>
       <!-- Dynamically populated categories -->
     </select>
+    <br />
+    <button id="exportButton" style="margin-top: 20px">Export Quotes</button>
+    <input
+      type="file"
+      id="importFile"
+      accept=".json"
+      style="margin-top: 20px"
+      onchange="importFromJsonFile(event)"
+    />
     <script src="script.js"></script>
   </body>
 </html>

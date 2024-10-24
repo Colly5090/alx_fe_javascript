@@ -89,11 +89,13 @@ function showRandomQuote(){
 
 function createAddQuoteForm(){
     const formContainer = document.createElement('div');
+    formContainer.style.marginTop = "20px";
     formContainer.innerHTML = `
         <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
         <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
         <button onclick="addQuote()">Add Quote</button>
     `;
+
     document.body.appendChild(formContainer);
 }
 
@@ -167,13 +169,6 @@ function loadQuotesFromLocalStorage(){
     }
 }
 
-function createExportButton(){
-    const exportButton = document.createElement('button');
-    exportButton.textContent = 'Export Quotes';
-    exportButton.style.marginTop = '20px';
-    exportButton.addEventListener('click', exportQuotesToJSON);
-    document.body.appendChild(exportButton);
-}
 
 function exportQuotesToJSON(){
     const data = JSON.stringify(quotes, null, 2);
@@ -186,17 +181,6 @@ function exportQuotesToJSON(){
     document.body.appendChild(link);
     link.click()
     document.body.removeChild(link);
-}
-
-function addImportFileInput(){
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.id = 'importFile';
-    fileInput.accept = '.json';
-    fileInput.onchange = importFromJsonFile;
-    fileInput.style.marginTop = '20px';
-
-    document.body.appendChild(fileInput)
 }
 
 function importFromJsonFile(event) {
@@ -326,12 +310,12 @@ document.addEventListener('DOMContentLoaded', () => {
     createAddQuoteForm();
     loadQuotesFromLocalStorage();
     loadLastViewedQuote();
-    createExportButton();
-    addImportFileInput();
+    //addImportFileInput();
     periodicFetch()
     
 
     // Button to show a random quote
     document.getElementById("newQuote").addEventListener('click', showRandomQuote);
+    document.getElementById("exportButton").addEventListener('click', exportQuotesToJSON);
 
 });
